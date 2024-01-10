@@ -29,43 +29,47 @@ public class Customer {
             double thisAnount = 0;
             Rental each = (Rental) rentals.nextElement();
 
-            // Sum for each element of string
-            switch (each.getMovie().getPriceCode()) {
-                case Movie.REGULAR:
-                    thisAnount += 2;
+            thisAnount = amountFor(each);
 
-                    if (each.getDaysRented() > 2)
-                        thisAnount += (each.getDaysRented() - 2) * 1.5;
-                    break;
+            //Bonus
+            frequentRenterPoints++;
 
-                case Movie.NEW_RELEASE:
-                    thisAnount += (each.getDaysRented() * 3);
-                    break;
-
-                case Movie.CHILDRENS:
-                    thisAnount += 1.5;
-                    if (each.getDaysRented() > 3){
-                        thisAnount += (each.getDaysRented() - 3) * 1.5;
-                        break;
-                    }
-                //Bonus
+            //Bonus for 2 days rent
+            if ((each.getMovie().getPriceCode() == Movie.NEW_RELEASE) && (each.getDaysRented() > 1))
                 frequentRenterPoints++;
 
-                //Bonus for 2 days rent
-                if (each.getMovie().getPriceCode() == Movie.NEW_RELEASE);
-                    //&& (each.getDaysRented() > 1) frequentRenterPoints++;
+            //Show rent results
+            result += "\t" + each.getMovie().getTitle() + "\t" + String.valueOf(thisAnount) + "\n";
+            totalAmout += thisAnount;
 
+            //Add a bit frumuseta
+            result += "Sum : " + String.valueOf(totalAmout) + '\n';
+            result += "You've earned: " + String.valueOf(frequentRenterPoints) + " amount of bonus";
+        }
+        return result;
+    }
 
-                //Show rent results
-                result += "\t" + each.getMovie().getTitle() + "\t" +
-                        String.valueOf(thisAnount) + "\n";
-                totalAmout += thisAnount;
+    private double amountFor(Rental aRental) {
+        double result = 0;
 
-                //Add a bit frumuseta
-                result += "Sum : " +
-                        String.valueOf(totalAmout) + '\n';
-                result += "You've earned: " + String.valueOf(frequentRenterPoints) + " amount of bonus";
-            }
+        // Sum for aRental element of string
+        switch (aRental.getMovie().getPriceCode()) {
+            case Movie.REGULAR:
+                result += 2;
+
+                if (aRental.getDaysRented() > 2) result += (aRental.getDaysRented() - 2) * 1.5;
+                break;
+
+            case Movie.NEW_RELEASE:
+                result += (aRental.getDaysRented() * 3);
+                break;
+
+            case Movie.CHILDRENS:
+                result += 1.5;
+                if (aRental.getDaysRented() > 3) {
+                    result += (aRental.getDaysRented() - 3) * 1.5;
+                    break;
+                }
         }
         return result;
     }
